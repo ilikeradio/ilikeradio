@@ -1,4 +1,8 @@
 { 
+  "botOwner" : "<yourDiscordID>",  
   "token"  : "<bot-token>",
-  "prefix" : "!"
+  "prefix" : "!",
+  "webURL" : "https://www.ilikeradio.se/",
+  "apiURL" : "https://app.khz.se/api/v2/",
+  "cdnURL" : "http://cdn.khz.se/images/"
 }
