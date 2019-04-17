@@ -62,4 +62,3 @@ Fork the code and add pull requests, **please target a review branch**!
 License
 ----
 [MIT](https://choosealicense.com/licenses/mit/)
-

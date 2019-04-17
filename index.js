@@ -72,11 +72,6 @@ client.on("message", async message => {
                         }
   }
 
-  if(command === "test") {
-        // Used in dev env
-}
-
-
   if(command === "ping") {
 	message.delete().catch(O_o=>{})
         const m = await message.channel.send("Ping?")
@@ -94,6 +89,8 @@ if(command == 'help') {
                 .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
                 .setTimestamp()
                 .addField("!help","This command, returns a list of commands!")
+                .addField("!invite","Get a invite link to add me to your server!")
+                .addField("!stations","Find out more about **I LIKE RADIO**s stations!")
                 .addField("!play [station]","Tune in to your favorite station! Just write !play to see stations!")
                 .addField("!stop","Had enough?! This makes the bot leave your voice channel.")
                 .addField("!np","What is playing on the stations? With this you will know!")
@@ -111,6 +108,26 @@ if(command == 'stop') {
 		        message.member.voiceChannel.leave()
 		return
 	}
+
+if(command == 'invite') {
+        const inviteEmbed = new Discord.RichEmbed()
+        .setColor('#0099ff')
+        .setTitle('Invite me to your server')
+        .setURL(config.webURL)
+        .setAuthor(client.user.username, config.webURL +'/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png',config.webURL)
+        .setTimestamp()
+        .addField("Invitation link:","https://discordapp.com/oauth2/authorize?client_id="+client.user.id+"&scope=bot&permissions=36826432")                                       
+        .setFooter(client.user.username, client.user.avatarURL)
+        message.react('😍')
+        message.react('👏')
+        message.react('🕺')
+        message.react('🎶')
+        message.channel.send(inviteEmbed)
+        .then(msg => {
+                message.delete(deleteafter).catch(O_o=>{})
+                msg.delete(deleteafter)
+        })
+}
 
   if(command === "play") {
 	if (!message.member.voiceChannel) { 
@@ -140,7 +157,7 @@ if(command == 'stop') {
         
                 if (found) {
                         let now = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0]
-                        let past = new Date().toISOString().split(':')[0]+':00:00'
+                        let past = new Date().toISOString().split('T')[0]+'T00:00:00'
 
                         message.member.voiceChannel.join()
                         .then(connection => {
