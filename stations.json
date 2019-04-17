@@ -1,0 +1,134 @@
+{
+        "banditrock": {
+            "name" : "Bandit Rock",
+            "channel_id" : "2",
+            "alias" : ["bandit","banditrock","bandit rock","rock","bandit r"],
+            "streamurl" : "http://fm02-ice.stream.khz.se/fm02_mp3"
+        },
+        "rixfm": {
+            "name" : "RIX FM",
+            "channel_id" : "3",
+            "alias" : ["rix","rixfm","rix fm"],
+            "streamurl" : "http://fm01-ice.stream.khz.se/fm01_mp3"
+        },
+        "lugnafavoriter": {
+            "name" : "Lugna Favoriter",
+            "channel_id" : "4",
+            "alias" : ["lugna","lugna favoriter"],
+            "streamurl" : "http://fm03-ice.stream.khz.se/fm03_mp3"
+        },
+        "starfm": {
+            "name" : "STAR FM",
+            "channel_id" : "94",
+            "alias" : ["star","star fm","starfm"],
+            "streamurl" : "http://fm05-ice.stream.khz.se/fm05_mp3"
+        },
+        "powerhitradio": {
+            "name" : "Power Hit Radio",
+            "channel_id" : "6",
+            "alias" : ["pwrhit","powerhit","pwr hit","power hit","power hit radio","pwr h"],
+            "streamurl" : "http://fm04-ice.stream.khz.se/fm04_mp3"
+        },
+        "banditballads": {
+            "name" : "Bandit Ballads",
+            "channel_id" : "64",
+            "alias" : ["bandit b","banditballads","bandit ballads"],
+            "streamurl" : "http://wr21-ice.stream.khz.se/wr21_mp3"
+        },
+        "banditclassics": {
+            "name" : "Bandit Classics",
+            "channel_id" : "7",
+            "alias" : ["bandit c","banditclassics","bandit classics"],
+            "streamurl" : "http://wr11-ice.stream.khz.se/wr11_mp3"
+        },
+        "banditmetal": {
+            "name" : "Bandit Metal",
+            "channel_id" : "8",
+            "alias" : ["bandit m","banditmetal","bandit metal"],
+            "streamurl" : "http://wr03-ice.stream.khz.se/wr03_mp3"
+        },
+        "rixfmfresh": {
+            "name" : "RIX FM Fresh",
+            "channel_id" : "9",
+            "alias" : ["rix f","rixfmfresh","rix fm fresh","rix fresh","fresh"],
+            "streamurl" : "http://wr04-ice.stream.khz.se/wr04_mp3"
+        },
+        "powerclub": {
+            "name" : "Power Club",
+            "channel_id" : "11",
+            "alias" : ["power c","powerclub","power club","pwr c","pwr club"],
+            "streamurl" : "http://wr06-ice.stream.khz.se/wr06_mp3"
+        },
+        "powerstreet": {
+            "name" : "Power Street",
+            "channel_id" : "12",
+            "alias" : ["power s","powerstreet","power street","pwr s","pwr street"],
+            "streamurl" : "http://wr07-ice.stream.khz.se/wr07_mp3"
+        },
+        "indie101": {
+            "name" : "Indie 101",
+            "channel_id" : "10",
+            "alias" : ["101","indie","indie 101","indie101"],
+            "streamurl" : "http://wr05-ice.stream.khz.se/wr05_mp3"
+        },
+        "svenskafavoriter": {
+            "name" : "Svenska Favoriter",
+            "channel_id" : "17",
+            "alias" : ["svenska","svenskafavoriter","svenska favoriter"],
+            "streamurl" : "http://wr13-ice.stream.khz.se/wr13_mp3"
+        },
+        "dansbandsfavoriter": {
+            "name" : "Dansbandsfavoriter",
+            "channel_id" : "20",
+            "alias" : ["dansband","dansbandsfavoriter","dansbands favoriter","dans bands favoriter"],
+            "streamurl" : "http://wr15-ice.stream.khz.se/wr15_mp3"
+        },
+        "countryclassics": {
+            "name" : "Country Classics",
+            "channel_id" : "19",
+            "alias" : ["country","countryclassics","country classics","countryc","country c"],
+            "streamurl" : "http://wr14-ice.stream.khz.se/wr14_mp3"
+        },
+        "star90s": {
+            "name" : "Star 90s",
+            "channel_id" : "18",
+            "alias" : ["star90s","star90","90s","star 90","star 90s","s90"],
+            "streamurl" : "http://wr12-ice.stream.khz.se/wr12_mp3"
+        },
+        "star80s": {
+            "name" : "Star 80s",
+            "channel_id" : "16",
+            "alias" : ["star80s","star80","80s","star 80","star 80s","s80"],
+            "streamurl" : "http://wr02-ice.stream.khz.se/wr02_mp3"
+        },
+        "star70s": {
+            "name" : "Star 70s",
+            "channel_id" : "15",
+            "alias" : ["star70s","star70","70s","star 70","star 70s","s70"],
+            "streamurl" : "http://wr10-ice.stream.khz.se/wr10_mp3"
+        },
+        "star60s": {
+            "name" : "Star 60s",
+            "channel_id" : "14",
+            "alias" : ["star60s","star60","60s","star 60","star 60s","s60"],
+            "streamurl" : "http://wr09-ice.stream.khz.se/wr09_mp3"
+        },
+        "electrolounge": {
+            "name" : "Electro Lounge",
+            "channel_id" : "21",
+            "alias" : ["electro","electrolounge","electro lounge","lounge"],
+            "streamurl" : "http://wr16-ice.stream.khz.se/wr16_mp3"
+        },
+        "soulclassics": {
+            "name" : "Soul Classics",
+            "channel_id" : "13",
+            "alias" : ["soul","soulclassics","soul classics","soul c"],
+            "streamurl" : "http://wr08-ice.stream.khz.se/wr08_mp3"
+        },
+        "onehitwonders": {
+            "name" : "One Hit Wonders",
+            "channel_id" : "71",
+            "alias" : ["onehit","onehitwonders","one hit","one hit wonders","1hit","one","one h"],
+            "streamurl" : "http://wr18-ice.stream.khz.se/wr18_mp3"
+        }
+    }

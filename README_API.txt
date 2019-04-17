@@ -19,6 +19,17 @@ https://app.khz.se/api/v2/category
 All hosts:
 https://app.khz.se/api/v2/host
 
+Song timeline:
+https://app.khz.se/api/v2/timeline?channel_id=2&client_id=0&to=2019-04-17T01:31:53&from=2019-04-16T23:31:53&limit=40
+channel_id=2 is BANDIT rock.
+client_id=0 seems to be spoofable
+
+
+Push for one song:
+https://app.khz.se/api/v2/timeline?channel_id=3&client_id=0&to=2019-04-17T15:05:00&from=2019-04-17T00:00:00&limit=1
+E.g Rix FM in above link, this will push the current song. The timestamps are incorrect in the reply though (most likely UTC time)
+
+
 Channel id: 2
 Name: Bandit ROCK
 Specific JSON data:
