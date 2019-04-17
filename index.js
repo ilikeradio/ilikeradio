@@ -94,6 +94,7 @@ if(command == 'help') {
                 .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
                 .setTimestamp()
                 .addField("!help","This command, returns a list of commands!")
+                .addField("!stations","Find out more about **I LIKE RADIO**s stations!")
                 .addField("!play [station]","Tune in to your favorite station! Just write !play to see stations!")
                 .addField("!stop","Had enough?! This makes the bot leave your voice channel.")
                 .addField("!np","What is playing on the stations? With this you will know!")
