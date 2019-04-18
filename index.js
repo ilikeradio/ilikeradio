@@ -15,6 +15,10 @@ client.on("error", (ex) => {
     console.error("ERROR " + ex)
 })
 
+if (config.debug) {
+client.on('debug', console.log)
+}
+
 client.on('unhandledRejection', (reason, promise) => {
   console.log('Unhandled Rejection at:', reason.stack || reason)
 })
@@ -85,8 +89,8 @@ if(command == 'help') {
         const playingEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('I LIKE RADIO - HELP')
-                .setURL('https://www.ilikeradio.se/')
-                .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                 .setTimestamp()
                 .addField("!help","This command, returns a list of commands!")
                 .addField("!invite","Get a invite link to add me to your server!")
@@ -105,7 +109,8 @@ if(command == 'help') {
 
 if(command == 'stop') {
 		if (!message.member.voiceChannel) return
-		        message.member.voiceChannel.leave()
+                        message.member.voiceChannel.leave()
+                        message.delete().catch(O_o=>{})
 		return
 	}
 
@@ -114,7 +119,7 @@ if(command == 'invite') {
         .setColor('#0099ff')
         .setTitle('Invite me to your server')
         .setURL(config.webURL)
-        .setAuthor(client.user.username, config.webURL +'/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png',config.webURL)
+        .setAuthor(client.user.username, config.webURL+config.logoPath,config.webURL)
         .setTimestamp()
         .addField("Invitation link:","https://discordapp.com/oauth2/authorize?client_id="+client.user.id+"&scope=bot&permissions=36826432")                                       
         .setFooter(client.user.username, client.user.avatarURL)
@@ -136,7 +141,7 @@ if(command == 'invite') {
                 .then(msg => { 
                         msg.delete(deleteafter) 
                 })
-	return
+	        return
 	} else {
                 const searchStation = args.join(" ").toLowerCase()
                 let url
@@ -159,6 +164,7 @@ if(command == 'invite') {
                         let now = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0]
                         let past = new Date().toISOString().split('T')[0]+'T00:00:00'
 
+                        try {
                         message.member.voiceChannel.join()
                         .then(connection => {
                                 fetch(config.apiURL+'timeline?channel_id='+channel_id+'&client_id=0&to='+now+'&from='+past+'&limit=1')
@@ -167,8 +173,8 @@ if(command == 'invite') {
                                 const playingEmbed = new Discord.RichEmbed()
                                         .setColor('#0099ff')
                                         .setTitle('Now playing')
-                                        .setURL('https://www.ilikeradio.se/')
-                                        .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
+                                        .setURL(config.webURL)
+                                        .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                                         .setTimestamp()
                                         .addField(radiostation,url)                                       
                                         .addField("Current song:",json[0].song.artist_name + " - " + json[0].song.title)
@@ -185,12 +191,15 @@ if(command == 'invite') {
                                 dispatcher.on('error', console.error)
                         })
                 })
+        } catch (ex) {
+                console.log(ex.stack);
+        }
         } else {
                 const pEmbed = new Discord.RichEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Play radio')
-                                .setURL('https://www.ilikeradio.se/')
-                                .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
+                                .setURL(config.webURL)
+                                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                                 .setTimestamp()
                                 .setDescription("You need to select channel!")
                                 .setFooter(client.user.username, client.user.avatarURL)
@@ -215,8 +224,8 @@ if (command === 'stations') {
 	const stationsEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Station list')
-                .setURL('https://www.ilikeradio.se/')
-                .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL)
                 var length = json.length
@@ -240,8 +249,8 @@ if (command === 'np') {
         const npEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Now playing')
-                .setURL('https://www.ilikeradio.se/')
-                .setAuthor(client.user.username,'https://www.ilikeradio.se/wp-content/themes/ilikeradio/assets/images/logo-ilikeradio.png','https://www.ilikeradio.se/')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL)
                 var length = json.length
