@@ -11,6 +11,9 @@ const deleteafter = 20000
 const commandcooldown = 1000
 const commandRecently = new Set()
 
+const activity = 'ILIKERADIO 🎵!play🎵'
+const acttype = "LISTENING"
+
 client.on("error", (ex) => {
     console.error("ERROR " + ex)
 })
@@ -25,15 +28,17 @@ client.on('unhandledRejection', (reason, promise) => {
 
 client.on("ready", () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`) 
-  client.user.setActivity(`ILIKERADIO 🎵!play🎵`,{type: "LISTENING"})
+  client.user.setActivity(activity,{type: acttype})
 })
 
 client.on("guildCreate", guild => {
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
+  client.user.setActivity(activity,{type: acttype})
 })
 
 client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`)
+  client.user.setActivity(activity,{type: acttype})
 })
 
 
@@ -97,7 +102,7 @@ if(command == 'help') {
                 .addField("!stations","Find out more about **I LIKE RADIO**s stations!")
                 .addField("!play [station]","Tune in to your favorite station! Just write !play to see stations!")
                 .addField("!stop","Had enough?! This makes the bot leave your voice channel.")
-                .addField("!np","What is playing on the stations? With this you will know!")
+                .addField("!np [station]","What is playing on the station or stations? With this you will know!")
                 .addField("!ping","Sound jitter? Check the latency with this!")
                 .setFooter(client.user.username, client.user.avatarURL)
         message.delete().catch(O_o=>{})
@@ -243,6 +248,51 @@ if (command === 'stations') {
 }
 
 if (command === 'np') {
+        const searchStation = args.join(" ").toLowerCase()
+        let url
+        let radiostation
+        let streamurl
+        let channel_id
+        let found=false
+        
+                Object.keys(radio).forEach(function(stn) {
+                if (radio[stn].alias.includes(searchStation)) {
+                        url = config.webURL + stn
+                        radiostation = radio[stn].name
+                        streamurl = radio[stn].streamurl
+                        channel_id = radio[stn].channel_id
+                        found=true
+                }
+        })
+
+        if (found) {
+                let now = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0]
+                let past = new Date().toISOString().split('T')[0]+'T00:00:00'
+
+                try {
+                fetch(config.apiURL+'timeline?channel_id='+channel_id+'&client_id=0&to='+now+'&from='+past+'&limit=1')
+                .then(res => res.json())
+                .then(json => {
+                const playingEmbed = new Discord.RichEmbed()
+                        .setColor('#0099ff')
+                        .setTitle('Now playing')
+                        .setURL(config.webURL)
+                        .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
+                        .setTimestamp()
+                        .addField(radiostation,url)                                       
+                        .addField("Current song:",json[0].song.artist_name + " - " + json[0].song.title)
+                        .setImage(config.cdnURL + json[0].song.cover_art)
+                        .setFooter(client.user.username, client.user.avatarURL)
+                message.delete().catch(O_o=>{})
+                message.channel.send(playingEmbed)
+                .then(msg => {
+                        msg.delete(deleteafter)
+                })
+        })
+} catch (ex) {
+        console.log(ex.stack);
+} 
+} else {
         fetch(config.apiURL+'channel')
         .then(res => res.json())
         .then(json => {
@@ -283,6 +333,7 @@ if (command === 'np') {
 	        msg.delete(deleteafter)
 	})
   })
+}
 }
         commandRecently.add(message.author.id)
         setTimeout(() => {
