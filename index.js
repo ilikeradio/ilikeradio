@@ -226,6 +226,9 @@ if (command === 'stations') {
 	fetch(config.apiURL+'channel')
 	.then(res => res.json())
 	.then(json => {
+        var length = json.length
+
+        if (length < 25) {
 	const stationsEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Station list')
@@ -233,17 +236,50 @@ if (command === 'stations') {
                 .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL)
-                var length = json.length
                 for (var i = 0;i < length; i++) {
                 const obj = json[i]
                 stationsEmbed.addField(obj.name,obj.description || 'No description available.')
                 }
-	message.delete().catch(O_o=>{})
-        message.channel.send(stationsEmbed)
-        .then(msg => {
-                msg.delete(deleteafter)
-        })
+                message.delete().catch(O_o=>{})
+                message.channel.send(stationsEmbed)
+                .then(msg => {
+                        msg.delete(deleteafter)
+                })
+        } else {
+        	const stationsEmbed = new Discord.RichEmbed()
+                .setColor('#0099ff')
+                .setTitle('Station list')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL)
+                for (var i = 0;i < 25; i++) {
+                const obj = json[i]
+                stationsEmbed.addField(obj.name,obj.description || 'No description available.')
+                }
 
+                const stationsEmbed2 = new Discord.RichEmbed()
+                .setColor('#0099ff')
+                .setTitle('Station list')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL)
+                for (var i = 25;i < length; i++) {
+                const obj2 = json[i]
+                stationsEmbed2.addField(obj2.name,obj2.description || 'No description available.')
+                }
+
+                message.delete().catch(O_o=>{})
+                message.channel.send(stationsEmbed)
+                .then(msg => {
+                        message.channel.send(stationsEmbed2)
+                        .then(msg2 => {
+                                msg2.delete(deleteafter)
+                        })
+                        msg.delete(deleteafter)
+                })      
+                }
 	})
 }
 
@@ -296,6 +332,9 @@ if (command === 'np') {
         fetch(config.apiURL+'channel')
         .then(res => res.json())
         .then(json => {
+        var length = json.length
+
+        if (length <25) {
         const npEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Now playing')
@@ -303,7 +342,6 @@ if (command === 'np') {
                 .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL)
-                var length = json.length
                 for (var i = 0;i < length; i++) {
                         const obj = json[i]
                         if (obj.currentsong == null) { 
@@ -326,12 +364,84 @@ if (command === 'np') {
                         var title = (obj.currentsong.song.title ? obj.currentsong.song.title : 'No song title available.')
                         npEmbed.addField(obj.name,`${artist} - ${title}`)
                         }
+                        message.delete().catch(O_o=>{})
+                        message.channel.send(npEmbed)
+                        .then(msg => {
+                                msg.delete(deleteafter)
+                        })
                 }
+        } else {
+                const npEmbed = new Discord.RichEmbed()             
+                .setColor('#0099ff')
+                .setTitle('Now playing')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL)
+                for (var i = 0;i < 25; i++) {
+                        const obj = json[i]
+                        if (obj.currentsong == null) { 
+                                npEmbed.addField(obj.name,'Nothing playing') 
+                        } else {
+                                var artist
+                        if (obj.currentsong.song.artist_name == null) { 
+                                artist = 'no artist name' 
+                        } else { 
+                                artist = obj.currentsong.song.artist_name 
+                        }
+                        var title
+                        if (obj.currentsong.song.title == null) { 
+                                title = 'no song title' 
+                        } else { 
+                                title = obj.currentsong.song.artist_name 
+                        }
+                        var song = artist + ' - ' + title
+                        var artist = (obj.currentsong.song.artist_name ? obj.currentsong.song.artist_name : 'No artist information.')
+                        var title = (obj.currentsong.song.title ? obj.currentsong.song.title : 'No song title available.')
+                        npEmbed.addField(obj.name,`${artist} - ${title}`)
+                        }
+                }
+                const npEmbed2 = new Discord.RichEmbed()
+                .setColor('#0099ff')
+                .setTitle('Now playing')
+                .setURL(config.webURL)
+                .setAuthor(client.user.username,config.webURL+config.logoPath,config.webURL)
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL)
+                for (var i = 25;i < length; i++) {
+                        const obj2 = json[i]
+                        if (obj2.currentsong == null) { 
+                                npEmbed2.addField(obj2.name,'Nothing playing') 
+                        } else {
+                                var artist2
+                        if (obj2.currentsong.song.artist_name == null) { 
+                                artist2 = 'no artist name' 
+                        } else { 
+                                artist2 = obj2.currentsong.song.artist_name 
+                        }
+                        var title2
+                        if (obj2.currentsong.song.title == null) { 
+                                title2 = 'no song title' 
+                        } else { 
+                                title2 = obj2.currentsong.song.artist_name 
+                        }
+                        var song2 = artist + ' - ' + title
+                        var artist2 = (obj2.currentsong.song.artist_name ? obj2.currentsong.song.artist_name : 'No artist information.')
+                        var title2 = (obj2.currentsong.song.title ? obj2.currentsong.song.title : 'No song title available.')
+                        npEmbed2.addField(obj2.name,`${artist2} - ${title2}`)
+                        }
+                }      
 	message.delete().catch(O_o=>{})
         message.channel.send(npEmbed)
         .then(msg => {
+                message.channel.send(npEmbed2)
+                .then(msg2 => {
+                        msg2.delete(deleteafter)
+                })
 	        msg.delete(deleteafter)
-	})
+        })
+      }
+
   })
 }
 }
