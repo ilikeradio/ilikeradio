@@ -8,7 +8,7 @@ const radio = require("./stations.json")
 
 const deleteafter = 20000
 
-const commandcooldown = 1000
+const commandcooldown = 2000
 const commandRecently = new Set()
 
 const activity = 'ILIKERADIO 🎵!play🎵'
@@ -27,7 +27,7 @@ client.on('unhandledRejection', (reason, promise) => {
 })
 
 client.on("ready", () => {
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`) 
+  console.log(`Bot has started, with ${client.users.cache.size} users, in ${client.channels.cache.size} channels of ${client.guilds.cache.size} guilds.`) 
   client.user.setActivity(activity,{type: acttype})
 })
 
@@ -47,9 +47,9 @@ client.on("message", async message => {
         if(message.content.indexOf(config.prefix) !== 0) return
                 if (commandRecently.has(message.author.id)) {
                         message.delete().catch(O_o=>{})
-                        message.channel.send("Slow down, not so fast! You'll soon be hearing them sweet tunes! (COOLDOWN: " + commandcooldown/1000 + "s ) - " + message.author)
+                        message.channel.send(`Slow down, not so fast! You'll soon be hearing them sweet tunes! (COOLDOWN: ${commandcooldown/1000}s ) - ${message.author}`)
                         .then(msg => { 
-                                msg.delete(deleteafter) 
+                                msg.delete({ timeout: deleteafter }) 
                         })
                 } else {
                         const args = message.content.slice(config.prefix.length).trim().split(/ +/g)
@@ -71,12 +71,12 @@ client.on("message", async message => {
 
                                         message.channel.send(clean(evaled), {code:"xl"})
                                         .then(msg => { 
-                                                msg.delete(120000) 
+                                                msg.delete({ timeout: 120000 }) 
                                         })
                                 } catch (err) {
                                         message.reply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``)
                                         .then(msg => { 
-                                                msg.delete(120000) 
+                                                msg.delete({ timeout: 120000 }) 
                                         })
                         }
   }
@@ -84,14 +84,14 @@ client.on("message", async message => {
   if(command === "ping") {
 	message.delete().catch(O_o=>{})
         const m = await message.channel.send("Ping?")
-        m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`)
+        m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ws.ping)}ms`)
         .then(msg => { 
-                msg.delete(deleteafter) 
+                msg.delete({ timeout: deleteafter }) 
         })
   }
   
 if(command == 'help') {
-        const playingEmbed = new Discord.RichEmbed()
+        const playingEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('I LIKE RADIO - HELP')
                 .setURL(config.webURL)
@@ -108,19 +108,19 @@ if(command == 'help') {
         message.delete().catch(O_o=>{})
         message.channel.send(playingEmbed)
         .then(msg => {
-                msg.delete(deleteafter)
+                msg.delete({ timeout: deleteafter })
         })
 }
 
 if(command == 'stop') {
-		if (!message.member.voiceChannel) return
-                        message.member.voiceChannel.leave()
+		if (!message.member.voice.channel) return
+                        message.member.voice.channel.leave()
                         message.delete().catch(O_o=>{})
 		return
 	}
 
 if(command == 'invite') {
-        const inviteEmbed = new Discord.RichEmbed()
+        const inviteEmbed = new Discord.MessageEmbed()
         .setColor('#0099ff')
         .setTitle('Invite me to your server')
         .setURL(config.webURL)
@@ -134,17 +134,17 @@ if(command == 'invite') {
         message.react('🎶')
         message.channel.send(inviteEmbed)
         .then(msg => {
-                message.delete(deleteafter).catch(O_o=>{})
-                msg.delete(deleteafter)
+                message.delete({ timeout: deleteafter }).catch(O_o=>{})
+                msg.delete({ timeout: deleteafter })
         })
 }
 
   if(command === "play") {
-	if (!message.member.voiceChannel) { 
+	if (!message.member.voice.channel) { 
 		message.delete().catch(O_o=>{})
                 message.channel.send('You are not in a voice channel, **join a voice chat and try again!**')
                 .then(msg => { 
-                        msg.delete(deleteafter) 
+                        msg.delete({ timeout: deleteafter }) 
                 })
 	        return
 	} else {
@@ -170,12 +170,12 @@ if(command == 'invite') {
                         let past = new Date().toISOString().split('T')[0]+'T00:00:00'
 
                         try {
-                        message.member.voiceChannel.join()
+                        message.member.voice.channel.join()
                         .then(connection => {
                                 fetch(config.apiURL+'timeline?channel_id='+channel_id+'&client_id=0&to='+now+'&from='+past+'&limit=1')
                                 .then(res => res.json())
                                 .then(json => {
-                                const playingEmbed = new Discord.RichEmbed()
+                                const playingEmbed = new Discord.MessageEmbed()
                                         .setColor('#0099ff')
                                         .setTitle('Now playing')
                                         .setURL(config.webURL)
@@ -188,9 +188,9 @@ if(command == 'invite') {
                                 message.delete().catch(O_o=>{})
                                 message.channel.send(playingEmbed)
                                 .then(msg => {
-                                        msg.delete(deleteafter)
+                                        msg.delete({ timeout: deleteafter })
                                 })
-                        return connection.playStream(streamurl)
+                        return connection.play(streamurl)
                         })
                         .then(dispatcher => {
                                 dispatcher.on('error', console.error)
@@ -200,7 +200,7 @@ if(command == 'invite') {
                 console.log(ex.stack);
         }
         } else {
-                const pEmbed = new Discord.RichEmbed()
+                const pEmbed = new Discord.MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Play radio')
                                 .setURL(config.webURL)
@@ -216,7 +216,7 @@ if(command == 'invite') {
                         message.delete().catch(O_o=>{})
                         message.channel.send(pEmbed)
                         .then(msg => {
-                                msg.delete(deleteafter)
+                                msg.delete({ timeout: deleteafter })
                         })
                 }
         }
@@ -229,7 +229,7 @@ if (command === 'stations') {
         var length = json.length
 
         if (length < 25) {
-	const stationsEmbed = new Discord.RichEmbed()
+	const stationsEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Station list')
                 .setURL(config.webURL)
@@ -243,10 +243,10 @@ if (command === 'stations') {
                 message.delete().catch(O_o=>{})
                 message.channel.send(stationsEmbed)
                 .then(msg => {
-                        msg.delete(deleteafter)
+                        msg.delete({ timeout: deleteafter })
                 })
         } else {
-        	const stationsEmbed = new Discord.RichEmbed()
+        	const stationsEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Station list')
                 .setURL(config.webURL)
@@ -258,7 +258,7 @@ if (command === 'stations') {
                 stationsEmbed.addField(obj.name,obj.description || 'No description available.')
                 }
 
-                const stationsEmbed2 = new Discord.RichEmbed()
+                const stationsEmbed2 = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Station list')
                 .setURL(config.webURL)
@@ -275,9 +275,9 @@ if (command === 'stations') {
                 .then(msg => {
                         message.channel.send(stationsEmbed2)
                         .then(msg2 => {
-                                msg2.delete(deleteafter)
+                                msg2.delete({ timeout: deleteafter })
                         })
-                        msg.delete(deleteafter)
+                        msg.delete({ timeout: deleteafter })
                 })      
                 }
 	})
@@ -309,7 +309,7 @@ if (command === 'np') {
                 fetch(config.apiURL+'timeline?channel_id='+channel_id+'&client_id=0&to='+now+'&from='+past+'&limit=1')
                 .then(res => res.json())
                 .then(json => {
-                const playingEmbed = new Discord.RichEmbed()
+                const playingEmbed = new Discord.MessageEmbed()
                         .setColor('#0099ff')
                         .setTitle('Now playing')
                         .setURL(config.webURL)
@@ -322,7 +322,7 @@ if (command === 'np') {
                 message.delete().catch(O_o=>{})
                 message.channel.send(playingEmbed)
                 .then(msg => {
-                        msg.delete(deleteafter)
+                        msg.delete({ timeout: deleteafter })
                 })
         })
 } catch (ex) {
@@ -335,7 +335,7 @@ if (command === 'np') {
         var length = json.length
 
         if (length <25) {
-        const npEmbed = new Discord.RichEmbed()
+        const npEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Now playing')
                 .setURL(config.webURL)
@@ -367,11 +367,11 @@ if (command === 'np') {
                         message.delete().catch(O_o=>{})
                         message.channel.send(npEmbed)
                         .then(msg => {
-                                msg.delete(deleteafter)
+                                msg.delete({ timeout: deleteafter })
                         })
                 }
         } else {
-                const npEmbed = new Discord.RichEmbed()             
+                const npEmbed = new Discord.MessageEmbed()             
                 .setColor('#0099ff')
                 .setTitle('Now playing')
                 .setURL(config.webURL)
@@ -401,7 +401,7 @@ if (command === 'np') {
                         npEmbed.addField(obj.name,`${artist} - ${title}`)
                         }
                 }
-                const npEmbed2 = new Discord.RichEmbed()
+                const npEmbed2 = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Now playing')
                 .setURL(config.webURL)
@@ -436,9 +436,9 @@ if (command === 'np') {
         .then(msg => {
                 message.channel.send(npEmbed2)
                 .then(msg2 => {
-                        msg2.delete(deleteafter)
+                        msg2.delete({ timeout: deleteafter })
                 })
-	        msg.delete(deleteafter)
+	        msg.delete({ timeout: deleteafter })
         })
       }
 

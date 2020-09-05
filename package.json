@@ -1,20 +1,14 @@
 {
   "name": "ilikeradio",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Discord.JS bot to Stream I LIKE RADIO (ilikeradio.se)",
   "main": "index.js",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "bufferutil": "^4.0.1",
-    "discord.js": "^11.4.2",
-    "erlpack": "^0.1.2",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "^4.0.0",
-    "libsodium-wrappers": "^0.7.4",
-    "node-fetch": "^2.3.0",
-    "node-opus": "^0.3.1",
-    "opusscript": "^0.0.6",
-    "sodium": "^3.0.2",
-    "uws": "^100.0.1"
+    "discord.js": "^12.3.1",
+    "erlpack": "github:discord/erlpack",
+    "sodium": "^3.0.2"
   },
   "devDependencies": {},
   "author": "Pontus Engblom (pontus@vertigroup.com)",
