@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "bufferutil": "^4.0.1",
+    "bufferutil": "^4.0.4",
     "discord.js": "^12.3.1",
     "erlpack": "github:discord/erlpack",
     "sodium": "^3.0.2"
